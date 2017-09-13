@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}首页{% endblock %}</title>
+    {% block css %}{% endblock %}
+</head>
+<body>
+<div id="header">
+    {% block header %}{% endblock %}
+</div>
+<div id="content-related">
+    {% block content-related %}{% endblock %}
+</div>
+<div id="navigator">
+    {% block navigator %}{% endblock %}
+</div>
+<div id="toolbar">
+    {% block toolbar %}{% endblock %}
+</div>
+<div id="content-main">
+    {% block content-main %}{% endblock %}
+</div>
+</body>
+</html>

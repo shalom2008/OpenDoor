@@ -6,7 +6,7 @@ from django.db import models
 class Customer(models.Model):
     name = models.CharField(max_length=128, verbose_name='客户简称')
     fullname = models.CharField(max_length=256, verbose_name='客户全称')
-    phone = models.IntegerField(verbose_name='手机')
+    phone = models.CharField(max_length=11, verbose_name='手机')
     address = models.CharField(max_length=256, verbose_name='地址')
 
     class Meta:
