@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div id="content">
+{% extends 'base.html' %}
+{% block navbar %}
+        <ul class="">
+            <li><a href={% url 'index' %}>首页</a></li>
+            {% for app in index %}
+                <li> {{ app }}</li>
+            {% endfor %}
+        </ul>
+{% endblock %}
+{% block container%}
     {% for app in index %}
         <p>{{ app }}</p>
     {% endfor %}
-</div>
-</body>
-</html>
+{% endblock %}
