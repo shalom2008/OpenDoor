@@ -39,9 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.customer',
-    'apps.order',
-    'apps.brand',
+    'apps.base_data',
+    'apps.sales',
 ]
 
 MIDDLEWARE = [
@@ -128,8 +127,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collectstatic')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
-APP_CONFIG = {
-    '销售管理': ('order',),
-    '基础资料': ('customer', 'brand')
-}
