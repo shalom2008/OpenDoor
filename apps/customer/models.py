@@ -8,6 +8,7 @@ class Customer(models.Model):
     fullname = models.CharField(max_length=256, verbose_name='客户全称')
     phone = models.CharField(max_length=11, verbose_name='手机')
     address = models.CharField(max_length=256, verbose_name='地址')
+   # brand = models.ForeignKey()
 
     class Meta:
         verbose_name = '客户资料'
