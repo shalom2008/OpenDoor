@@ -127,3 +127,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collectstatic')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+document_status = (
+    ('0', 'open'),
+    ('1', 'submit'),
+    ('2', 'commit')
+)
