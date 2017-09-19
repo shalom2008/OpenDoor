@@ -68,6 +68,7 @@ class Customer(models.Model):
     we_chat = models.CharField(max_length=32, verbose_name='微信号', blank=True)
     contact_man = models.CharField(max_length=32, verbose_name='联系人')
     contact_number = models.CharField(max_length=64, verbose_name='联系电话')
+    fax_number = models.CharField(max_length=64, verbose_name='传真号码')
     type = models.ForeignKey(CustomerType, on_delete=models.PROTECT,
                              limit_choices_to={'is_active': True})
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -178,6 +179,32 @@ class Material(models.Model):
 
     class Meta:
         verbose_name = '物料'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class Currency(models.Model):
+    name = models.CharField(max_length=16, verbose_name='币别名称', unique=True)
+    symbol = models.CharField(max_length=16, verbose_name='货币符号', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='有效')
+
+    class Meta:
+        verbose_name = '币种'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class Tax(models.Model):
+    name = models.CharField(max_length=16, verbose_name='税别名称', unique=True)
+    tax_rate = models.FloatField(verbose_name='税率', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='有效')
+
+    class Meta:
+        verbose_name = '税种'
         verbose_name_plural = verbose_name
 
     def __str__(self):

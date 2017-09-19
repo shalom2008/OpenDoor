@@ -131,5 +131,6 @@ STATICFILES_DIRS = [
 document_status = (
     ('0', 'open'),
     ('1', 'submit'),
-    ('2', 'commit')
+    ('2', 'commit'),
+    ('4', 'cancel')
 )
