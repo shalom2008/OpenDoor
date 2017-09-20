@@ -2,8 +2,29 @@ from django.db import models
 from datetime import datetime
 from OpenDoor.settings import document_status
 
-from apps.base_data.models import Customer, Brand, Staff, Department, Material, Currency, Tax
+from apps.base_data.models import BaseItem, Customer, Brand, Staff, Department,\
+    Material, Currency, Tax
 # Create your models here.
+
+
+class OrderParm(models.Model):
+    name = models.CharField(max_length=32, unique=True, verbose_name='')
+    parm_type = models.CharField(max_length=32, choices=(('manual', '手工录入'),
+                                                         ('relate_item', '关联项目')),
+                                 verbose_name='')
+    relate_item = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                    limit_choices_to={'is_active': True})
+    parm_class = models.CharField(max_length=16, choices=(('char', '字符串'),
+                                                          ('int', '整数'),
+                                                          ('float', '小数')))
+    parm_len = models.IntegerField(verbose_name='', default=32)
+
+    class Meta:
+        verbose_name = ''
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class SaleType(models.Model):
@@ -28,10 +49,10 @@ class InvoiceHeader(models.Model):
                               limit_choices_to={'is_active': True})
     status = models.CharField(max_length=1, verbose_name='', choices=document_status)
     sale_type = models.ForeignKey(SaleType, on_delete=models.PROTECT,
-                                  limit_choices_to={'is_active':True})
-    salesman = models.ForeignKey(Staff, related_name='salesman', on_delete=models.PROTECT,
+                                  limit_choices_to={'is_active': True})
+    salesman = models.ForeignKey(Staff, related_name='inv_salesman', on_delete=models.PROTECT,
                                  limit_choices_to={'is_active': True})
-    order_taker = models.ForeignKey(Staff, related_name='order_taker', on_delete=models.PROTECT,
+    order_taker = models.ForeignKey(Staff, related_name='inv_order_taker', on_delete=models.PROTECT,
                                     limit_choices_to={'is_active': True})
     department = models.ForeignKey(Department, on_delete=models.PROTECT,
                                    limit_choices_to={'is_active': True})

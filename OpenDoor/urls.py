@@ -21,5 +21,6 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'^sales/', include('apps.sales.urls', namespace='sales'))
+    url(r'^sales/', include('apps.sales.urls', namespace='sales')),
+    url(r'^base/', include('apps.base_data.urls', namespace='base'))
 ]

@@ -3,7 +3,21 @@ from django.db import models
 # Create your models here.
 
 
+class BaseItem(models.Model):
+    name = models.CharField(max_length=32, unique=True, verbose_name='项目名称')
+    is_active = models.BooleanField(default=True, verbose_name='有效')
+
+    class Meta:
+        verbose_name = '基础资料'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
 class Department(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=32, unique=True, verbose_name='部门名称')
     desc = models.CharField(max_length=128, verbose_name='备注')
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -17,6 +31,8 @@ class Department(models.Model):
 
 
 class Staff(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=32, unique=True, verbose_name='职员名称')
     department = models.ForeignKey(Department, on_delete=models.PROTECT,
                                    limit_choices_to={'is_active': True})
@@ -32,6 +48,8 @@ class Staff(models.Model):
 
 
 class CustomerType(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=24, unique=True, verbose_name='客户类别名称')
     desc = models.CharField(max_length=128, verbose_name='备注')
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -45,6 +63,8 @@ class CustomerType(models.Model):
 
 
 class Brand(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=24, unique=True, verbose_name='品牌名称')
     desc = models.CharField(max_length=128, verbose_name='备注')
     img = models.ImageField(verbose_name='品牌图片')
@@ -59,6 +79,8 @@ class Brand(models.Model):
 
 
 class Customer(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=64, verbose_name='客户简称', unique=True)
     fullname = models.CharField(max_length=128, verbose_name='客户全称', unique=True)
     phone = models.CharField(max_length=11, verbose_name='手机')
@@ -72,9 +94,9 @@ class Customer(models.Model):
     type = models.ForeignKey(CustomerType, on_delete=models.PROTECT,
                              limit_choices_to={'is_active': True})
     is_active = models.BooleanField(default=True, verbose_name='有效')
-    salesman = models.ForeignKey(Staff, related_name='salesman', on_delete=models.PROTECT,
+    salesman = models.ForeignKey(Staff, related_name='cus_salesman', on_delete=models.PROTECT,
                                  limit_choices_to={'is_active': True})
-    order_taker = models.ForeignKey(Staff, related_name='order_taker', on_delete=models.PROTECT,
+    order_taker = models.ForeignKey(Staff, related_name='cus_order_taker', on_delete=models.PROTECT,
                                     limit_choices_to={'is_active': True})
     credit_limit = models.BooleanField(default=False, verbose_name='信用检查')
     credit = models.DecimalField(verbose_name='信用额度', blank=True, decimal_places=3, max_digits=15)
@@ -89,6 +111,8 @@ class Customer(models.Model):
 
 
 class Series(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=32, unique=True, verbose_name='系列名称')
     desc = models.CharField(max_length=128, verbose_name='备注')
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -104,6 +128,8 @@ class Series(models.Model):
 
 
 class Color(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=32, unique=True, verbose_name='颜色名称')
     img = models.ImageField(verbose_name='颜色图片')
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -117,6 +143,8 @@ class Color(models.Model):
 
 
 class MaterialType(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=16, unique=True, verbose_name='物料类别名称')
     is_active = models.BooleanField(default=True, verbose_name='有效')
 
@@ -129,6 +157,8 @@ class MaterialType(models.Model):
 
 
 class MaterialOrigin(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=16, unique=True, verbose_name='物料来源名称')
     is_active = models.BooleanField(default=True, verbose_name='有效')
 
@@ -141,6 +171,8 @@ class MaterialOrigin(models.Model):
 
 
 class Unit(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=16, verbose_name='单位名称', unique=True)
     symbol = models.CharField(max_length=16, verbose_name='单位符号', unique=True)
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -154,6 +186,8 @@ class Unit(models.Model):
 
 
 class Material(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     encoder = models.CharField(max_length=32, verbose_name='物料编码')
     name = models.CharField(max_length=64, unique=True, verbose_name='物料名称')
     specification = models.CharField(max_length=64, verbose_name='规格')
@@ -186,6 +220,8 @@ class Material(models.Model):
 
 
 class Currency(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=16, verbose_name='币别名称', unique=True)
     symbol = models.CharField(max_length=16, verbose_name='货币符号', unique=True)
     is_active = models.BooleanField(default=True, verbose_name='有效')
@@ -199,6 +235,8 @@ class Currency(models.Model):
 
 
 class Tax(models.Model):
+    item_id = models.ForeignKey(BaseItem, on_delete=models.PROTECT,
+                                limit_choices_to={'is_active': True})
     name = models.CharField(max_length=16, verbose_name='税别名称', unique=True)
     tax_rate = models.FloatField(verbose_name='税率', unique=True)
     is_active = models.BooleanField(default=True, verbose_name='有效')

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block main %}
+    {% for base_item in base_item_set %}
+        <p><a href="{% url 'base:base_item_index' %}">{{ base_item.name }}</a> </p>
+    {% endfor %}
+{% endblock %}
