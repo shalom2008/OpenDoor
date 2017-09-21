@@ -1,11 +1,11 @@
 from django.db import models
 
-from common.generic import BaseObject
+from common.generic import BaseItemObject
 
 # Create your models here.
 
 
-class BaseItem(BaseObject):
+class BaseItem(BaseItemObject):
     name = models.CharField(max_length=32, unique=True, verbose_name='项目名称')
 
     class Meta:
@@ -16,7 +16,7 @@ class BaseItem(BaseObject):
         return self.name
 
 
-class Department(BaseObject):
+class Department(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=32, unique=True, verbose_name='部门名称')
 
@@ -25,7 +25,7 @@ class Department(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Staff(BaseObject):
+class Staff(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=32, unique=True, verbose_name='职员名称')
     department = models.ForeignKey(Department, on_delete=models.PROTECT,
@@ -36,7 +36,7 @@ class Staff(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class CustomerType(BaseObject):
+class CustomerType(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=24, unique=True, verbose_name='客户类别名称')
 
@@ -45,7 +45,7 @@ class CustomerType(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Brand(BaseObject):
+class Brand(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=24, unique=True, verbose_name='品牌名称')
     img = models.ImageField(verbose_name='品牌图片')
@@ -55,7 +55,7 @@ class Brand(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Customer(BaseObject):
+class Customer(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=64, verbose_name='客户简称', unique=True)
     fullname = models.CharField(max_length=128, verbose_name='客户全称', unique=True)
@@ -81,7 +81,7 @@ class Customer(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Series(BaseObject):
+class Series(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=32, unique=True, verbose_name='系列名称')
     brand = models.ForeignKey(Brand, on_delete=models.PROTECT,
@@ -92,7 +92,7 @@ class Series(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Color(BaseObject):
+class Color(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=32, unique=True, verbose_name='颜色名称')
     img = models.ImageField(verbose_name='颜色图片')
@@ -102,7 +102,7 @@ class Color(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class MaterialType(BaseObject):
+class MaterialType(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=16, unique=True, verbose_name='物料类别名称')
 
@@ -111,7 +111,7 @@ class MaterialType(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class MaterialOrigin(BaseObject):
+class MaterialOrigin(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=16, unique=True, verbose_name='物料来源名称')
 
@@ -120,7 +120,7 @@ class MaterialOrigin(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Unit(BaseObject):
+class Unit(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=16, verbose_name='单位名称', unique=True)
     symbol = models.CharField(max_length=16, verbose_name='单位符号', unique=True)
@@ -130,7 +130,34 @@ class Unit(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Material(BaseObject):
+class MaterialParmCategory(BaseItemObject):
+    item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
+    name = models.CharField(verbose_name='', max_length=32, unique=True)
+
+    class Meta:
+        verbose_name = '物料参数类别'
+        verbose_name_plural = verbose_name
+
+
+class ParmList(BaseItemObject):
+    item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
+    name = models.CharField(verbose_name='', max_length=32, unique=True)
+    parm_name = models.CharField(verbose_name='', max_length=32, unique=True)
+    parm_category = models.ManyToManyField(MaterialParmCategory)
+    input_type = models.CharField(max_length=16, choices=(('manual', '手工录入'),
+                                                          ('relate_item', '关联项目')), verbose_name='')
+    relate_item = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
+    parm_type = models.CharField(max_length=8, choices=(('char', '字符串'),
+                                                        ('int', '整数'),
+                                                        ('float', '小数')))
+    input_len = models.IntegerField(verbose_name='')
+
+    class Meta:
+        verbose_name = '参数清单'
+        verbose_name_plural = verbose_name
+
+
+class Material(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     encoder = models.CharField(max_length=32, verbose_name='物料编码')
     name = models.CharField(max_length=64, unique=True, verbose_name='物料名称')
@@ -139,6 +166,7 @@ class Material(BaseObject):
                                limit_choices_to={'is_active': True})
     type = models.ForeignKey(MaterialType, on_delete=models.PROTECT,
                              limit_choices_to={'is_active': True})
+    parm_category = models.ForeignKey(MaterialParmCategory, on_delete=models.PROTECT, blank=True, null=True)
     origin = models.ForeignKey(MaterialOrigin, on_delete=models.PROTECT,
                                limit_choices_to={'is_active': True})
     main_unit = models.ForeignKey(Unit, related_name='main_unit', on_delete=models.PROTECT,
@@ -153,13 +181,16 @@ class Material(BaseObject):
                                       limit_choices_to={'is_active': True})
     produce_unit = models.ForeignKey(Unit, related_name='produce_unit', on_delete=models.PROTECT,
                                      limit_choices_to={'is_active': True})
+    sale_price = models.DecimalField(verbose_name='', max_digits=15, decimal_places=3, blank=True, null=True)
+    purchase_price = models.DecimalField(verbose_name='', max_digits=15, decimal_places=3, blank=True, null=True)
+    stock_price = models.DecimalField(verbose_name='', max_digits=15, decimal_places=3, blank=True, null=True)
 
     class Meta:
         verbose_name = '物料'
         verbose_name_plural = verbose_name
 
 
-class Currency(BaseObject):
+class Currency(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=16, verbose_name='币别名称', unique=True)
     symbol = models.CharField(max_length=16, verbose_name='货币符号', unique=True)
@@ -169,11 +200,19 @@ class Currency(BaseObject):
         verbose_name_plural = verbose_name
 
 
-class Tax(BaseObject):
+class Tax(BaseItemObject):
     item_type = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     name = models.CharField(max_length=16, verbose_name='税别名称', unique=True)
-    tax_rate = models.FloatField(verbose_name='税率', unique=True)
+    tax_rate = models.DecimalField(verbose_name='税率', unique=True, max_digits=15, decimal_places=3)
 
     class Meta:
         verbose_name = '税种'
+        verbose_name_plural = verbose_name
+
+
+class SaleType(BaseItemObject):
+    name = models.CharField(max_length=16, verbose_name='', unique=True)
+
+    class Meta:
+        verbose_name = ''
         verbose_name_plural = verbose_name

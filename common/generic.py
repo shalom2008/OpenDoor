@@ -3,12 +3,10 @@ from django.db import models
 from OpenDoor.settings import document_status
 
 
-class BaseObject(models.Model):
+class BaseItemObject(models.Model):
     """
     All base item object derive from this class
     """
-    begin = models.DateField(verbose_name='', blank=True, null=True)
-    end = models.DateField(verbose_name='', blank=True, null=True)
     creator = models.CharField(verbose_name='', max_length=32, blank=True, null=True)
     modifier = models.CharField(verbose_name='', max_length=32, blank=True, null=True)
     create_time = models.DateTimeField(verbose_name='', blank=True, null=True)
@@ -30,6 +28,10 @@ class BaseOrderObject(models.Model):
     """
     All base order object derive from this class
     """
+    order_name = models.CharField(verbose_name='', unique=True, max_length=14)
+    order_date = models.DateField(verbose_name='', blank=True, null=True)
+    submit_date = models.DateField(verbose_name='')
+    confirm_date = models.DateField(verbose_name='')
     begin = models.DateField(verbose_name='', blank=True, null=True)
     end = models.DateField(verbose_name='', blank=True, null=True)
     creator = models.CharField(verbose_name='', max_length=32, blank=True, null=True)
@@ -37,9 +39,10 @@ class BaseOrderObject(models.Model):
     create_time = models.DateTimeField(verbose_name='', blank=True, null=True)
     modify_time = models.DateTimeField(verbose_name='', blank=True, null=True)
     status = models.CharField(max_length=1, verbose_name='', choices=document_status)
+    desc = models.CharField(max_length=128, verbose_name='', blank=True, null=True)
 
     def __str__(self):
-        display = getattr(self, 'order_code', None)
+        display = getattr(self, 'order_name', None)
         if not display:
             display = ' '
         return u'%s' % display

@@ -131,6 +131,6 @@ STATICFILES_DIRS = [
 document_status = (
     ('open', '开立'),
     ('submit', '提交'),
-    ('commit', '审核'),
+    ('confirm', '审核'),
     ('cancel', '作废')
 )
