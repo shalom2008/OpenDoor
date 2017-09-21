@@ -12,6 +12,12 @@ class IndexView(generic.ListView):
     model = BaseItem
 
 
+class ItemListView(generic.ListView):
+    template_name = 'base_data/base_item_list.html'
+    context_object_name = 'base_item_set'
+    model = BaseItem
+
+
 class DetailView(generic.ListView):
     model = Color
     template_name = 'base_data/detail.html'

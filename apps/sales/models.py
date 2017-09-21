@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 from OpenDoor.settings import document_status
 
-from apps.base_data.models import BaseItem, Customer, Brand, Staff, Department,\
+from apps.basedata.models import BaseItem, Customer, Brand, Staff, Department,\
     Material, Currency, Tax
 # Create your models here.
 
