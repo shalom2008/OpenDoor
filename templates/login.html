@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Login{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href={% static 'bootstrap/css/bootstrap.css' %} rel="stylesheet">
+    {% block css %}
+        <style>
+            .form-signin {
+                max-width: 330px;
+                padding: 15px;
+                margin: 0 auto;
+            }
+            .form-signin .form-signin-heading, .form-signin .checkbox {
+                margin-bottom: 10px;
+            }
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0,0,0,0);
+                border: 0;
+            }
+            .form-signin input[type="text"] {
+                margin-bottom: -1px;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        </style>
+    {% endblock %}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <form class="form-signin" action={% url 'login' %} method="post">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">请&nbsp;登&nbsp;录&nbsp;！</h2>
+            <label for="inputUser" class="sr-only">User name</label>
+            <input name="username" type="text" class="form-control" placeholder="User name" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input name="password" type="password" class="form-control" placeholder="Password" required><br/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登&nbsp;录</button>
+        </form>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src={% static 'bootstrap/js/bootstrap.js' %}></script>
+</body>
+</html>
