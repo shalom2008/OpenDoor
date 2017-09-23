@@ -5,16 +5,18 @@ from common.generic import BaseItemObject
 # Create your models here.
 
 
-class BaseItem(BaseItemObject):
+class Item(BaseItemObject):
     item_type = models.IntegerField(unique=True, verbose_name='项目类型')
     name = models.CharField(max_length=32, unique=True, verbose_name='项目名称')
+    module_name = models.CharField(max_length=32, unique=True, verbose_name='模型名称')
+    url = models.CharField(max_length=64, unique=True, verbose_name='链接')
 
     class Meta:
         verbose_name = '基础资料'
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.name
+        return self.module_name
 
 
 class Department(BaseItemObject):
@@ -137,7 +139,7 @@ class Parm(BaseItemObject):
     parm_name = models.CharField(verbose_name='参数名称', max_length=32, unique=True)
     input_type = models.CharField(max_length=16, choices=(('manual', '手工录入'),
                                                           ('relate_item', '关联项目')), verbose_name='')
-    relate_item = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
+    relate_item = models.ForeignKey(Item, on_delete=models.PROTECT)
     parm_type = models.CharField(max_length=8, choices=(('char', '字符串'),
                                                         ('int', '整数'),
                                                         ('float', '小数')))

@@ -1,4 +1,17 @@
-INSERT INTO `basedata_baseitem` (`item_type`,`name`,`is_active`) VALUES (2001,'部门',1),(2002,'职员',1)
-,(3001,'客户类别',1),(3002,'经营品牌',1),(3003,'客户资料',1),(1001,'产品系列',1),(1002,'颜色',1)
-,(1003,'物料类别',1),(1004,'物料来源',1),(1005,'单位',1),(1006,'参数',1),(1007,'物料参数组',1)
-,(1008,'物料',1),(5001,'币种',1),(5002,'税种',1),(3004,'销售类型',1)
+INSERT INTO `basedata_item` (`item_type`,`name`,`module_name`,`url`,`is_active`)
+VALUES (2001,'部门','Department','/base/Department/',1),
+(2002,'职员','Staff','/base/Staff/',1),
+(3001,'客户类别','CustomerType','/base/CustomerType/',1),
+(3002,'经营品牌','Brand','/base/Brand/',1),
+(3003,'客户资料','Customer','/base/Customer/',1),
+(1001,'产品系列','Series','/base/Series/',1),
+(1002,'颜色','Color','/base/Color/',1),
+(1003,'物料类别','MaterialType','/base/MaterialType/',1),
+(1004,'物料来源','MaterialOrigin','/base/MaterialOrigin/',1),
+(1005,'单位','Unit','/base/Unit/',1),
+(1006,'参数','Parm','/base/Parm/',1),
+(1007,'物料参数组','MaterialParmGroup','/base/MaterialParmGroup/',1),
+(1008,'物料','Material','/base/Material/',1),
+(5001,'币种','Currency','/base/Currency/',1),
+(5002,'税种','Tax','/base/Tax/',1),
+(3004,'销售类型','SaleType','/base/SaleType/',1)
