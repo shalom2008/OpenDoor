@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from . import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+from apps.basedata.models import BaseItem
 
 
+@login_required(login_url='/login')
 def index(request):
     context = settings.INSTALLED_APPS[6:]
     return render(request, 'index.html', {"index": context})
@@ -10,12 +14,21 @@ def index(request):
 
 def user_login(request):
     if request.method == "POST":
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = authenticate(request, username=username, password=password)
-        print(user)
-        if user:
-            login(request, user)
-        return redirect('/')
+        try:
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
+            user = User.objects.filter(username=username)
+            if not user:
+                raise Exception('该用户不存在！')
+
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+            else:
+                raise Exception('密码错误！')
+            return redirect('/')
+        except Exception as e:
+            error_message = str(e)
+            return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')

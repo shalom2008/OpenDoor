@@ -12,7 +12,7 @@ class BaseItemObject(models.Model):
     create_time = models.DateTimeField(verbose_name='', blank=True, null=True)
     modify_time = models.DateTimeField(verbose_name='', blank=True, null=True)
     desc = models.CharField(verbose_name='', max_length=64, blank=True, null=True)
-    is_active = models.BooleanField(verbose_name='', default=True)
+    is_active = models.BooleanField(verbose_name='', default=1)
 
     def __str__(self):
         display = getattr(self, 'name', None)
