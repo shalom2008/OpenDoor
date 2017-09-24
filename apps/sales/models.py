@@ -1,8 +1,6 @@
 from django.db import models
-from datetime import datetime
-from OpenDoor.settings import document_status
 
-from apps.basedata.models import BaseItem, Customer, Brand, Staff, Department,\
+from apps.basedata.models import Customer, Brand, Staff, Department,\
     Material, Currency, Tax, SaleType
 from common.generic import BaseOrderObject
 # Create your models here.

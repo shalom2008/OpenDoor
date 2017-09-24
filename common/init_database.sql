@@ -1,4 +1,4 @@
-INSERT INTO `basedata_item` (`item_type`,`name`,`module_name`,`url`,`is_active`)
+INSERT INTO `basedata_baseitem` (`item_type`,`name`,`module_name`,`url`,`is_active`)
 VALUES (2001,'部门','Department','/base/Department/',1),
 (2002,'职员','Staff','/base/Staff/',1),
 (3001,'客户类别','CustomerType','/base/CustomerType/',1),

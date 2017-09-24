@@ -3,13 +3,10 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from apps.basedata.models import BaseItem
-
 
 @login_required(login_url='/login')
 def index(request):
-    context = settings.INSTALLED_APPS[6:]
-    return render(request, 'index.html', {"index": context})
+    return render(request, 'index.html')
 
 
 def user_login(request):

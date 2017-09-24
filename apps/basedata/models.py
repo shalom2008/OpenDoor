@@ -5,7 +5,7 @@ from common.generic import BaseItemObject
 # Create your models here.
 
 
-class Item(BaseItemObject):
+class BaseItem(BaseItemObject):
     item_type = models.IntegerField(unique=True, verbose_name='项目类型')
     name = models.CharField(max_length=32, unique=True, verbose_name='项目名称')
     module_name = models.CharField(max_length=32, unique=True, verbose_name='模型名称')
@@ -139,7 +139,7 @@ class Parm(BaseItemObject):
     parm_name = models.CharField(verbose_name='参数名称', max_length=32, unique=True)
     input_type = models.CharField(max_length=16, choices=(('manual', '手工录入'),
                                                           ('relate_item', '关联项目')), verbose_name='')
-    relate_item = models.ForeignKey(Item, on_delete=models.PROTECT)
+    relate_item = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
     parm_type = models.CharField(max_length=8, choices=(('char', '字符串'),
                                                         ('int', '整数'),
                                                         ('float', '小数')))
@@ -152,7 +152,7 @@ class Parm(BaseItemObject):
 
 class MaterialParmGroup(BaseItemObject):
     item_type = 1007
-    name = models.CharField(verbose_name='', max_length=32, unique=True)
+    name = models.CharField(verbose_name='参数组名称', max_length=32, unique=True)
     parm = models.ManyToManyField(Parm, through="MaterialParmShip")
 
     class Meta:
@@ -190,9 +190,9 @@ class Material(BaseItemObject):
                                       limit_choices_to={'is_active': True})
     produce_unit = models.ForeignKey(Unit, related_name='produce_unit', on_delete=models.PROTECT,
                                      limit_choices_to={'is_active': True})
-    sale_price = models.DecimalField(verbose_name='', max_digits=15, decimal_places=3, blank=True, null=True)
-    purchase_price = models.DecimalField(verbose_name='', max_digits=15, decimal_places=3, blank=True, null=True)
-    stock_price = models.DecimalField(verbose_name='', max_digits=15, decimal_places=3, blank=True, null=True)
+    sale_price = models.DecimalField(verbose_name='销售单价', max_digits=15, decimal_places=3, blank=True, null=True)
+    purchase_price = models.DecimalField(verbose_name='采购单价', max_digits=15, decimal_places=3, blank=True, null=True)
+    stock_price = models.DecimalField(verbose_name='库存单价', max_digits=15, decimal_places=3, blank=True, null=True)
 
     class Meta:
         verbose_name = '物料'
