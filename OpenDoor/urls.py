@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.user_login, name='login'),
+    url(r'^base/', include('apps.basedata.urls', namespace='basedata')),
     url(r'^sales/', include('apps.sales.urls', namespace='sales'))
 ]

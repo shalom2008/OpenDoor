@@ -1,22 +1,9 @@
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
 
 from common.generic import BaseItemObject
 
 # Create your models here.
-
-
-class BaseItem(BaseItemObject):
-    item_type = models.IntegerField(unique=True, verbose_name='项目类型')
-    name = models.CharField(max_length=32, unique=True, verbose_name='项目名称')
-    module_name = models.CharField(max_length=32, unique=True, verbose_name='模型名称')
-    url = models.CharField(max_length=64, unique=True, verbose_name='链接')
-
-    class Meta:
-        verbose_name = '基础资料'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.module_name
 
 
 class Department(BaseItemObject):
@@ -139,7 +126,7 @@ class Parm(BaseItemObject):
     parm_name = models.CharField(verbose_name='参数名称', max_length=32, unique=True)
     input_type = models.CharField(max_length=16, choices=(('manual', '手工录入'),
                                                           ('relate_item', '关联项目')), verbose_name='')
-    relate_item = models.ForeignKey(BaseItem, on_delete=models.PROTECT)
+    relate_item = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to={'app_label': 'basedata'})
     parm_type = models.CharField(max_length=8, choices=(('char', '字符串'),
                                                         ('int', '整数'),
                                                         ('float', '小数')))
@@ -153,16 +140,11 @@ class Parm(BaseItemObject):
 class MaterialParmGroup(BaseItemObject):
     item_type = 1007
     name = models.CharField(verbose_name='参数组名称', max_length=32, unique=True)
-    parm = models.ManyToManyField(Parm, through="MaterialParmShip")
+    parm = models.ManyToManyField(Parm)
 
     class Meta:
         verbose_name = '物料参数组'
         verbose_name_plural = verbose_name
-
-
-class MaterialParmShip(BaseItemObject):
-    parm_group = models.ForeignKey(MaterialParmGroup, on_delete=models.PROTECT)
-    parm = models.ForeignKey(Parm, on_delete=models.PROTECT)
 
 
 class Material(BaseItemObject):

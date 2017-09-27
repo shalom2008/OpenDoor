@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block main %}
+    <div class="row">
+    {% for item in item_list %}
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <img src="" alt={{ item.name }}>
+                <div class="caption">
+                    <h3><a href="{% url 'basedata:item_list' item_name=item.model %}">{{ item.name }}</a></h3>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
