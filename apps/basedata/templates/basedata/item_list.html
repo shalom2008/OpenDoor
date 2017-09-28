@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+
 {% block main %}
-    {% for item in content %}
-        <p>{{ item.name }}</p>
-    {% endfor %}
+    {% render_table table %}
 {% endblock %}

@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import Http404
+from django_tables2 import RequestConfig
+from .tables import BaseItemTable
 
 # Create your views here.
 
@@ -14,8 +15,9 @@ def index(request):
 
 @login_required(login_url='/login')
 def item_list(request, item_name):
-    item_type = ContentType.objects.get(app_label='basedata', model=item_name)
-    item = item_type.model_class()
-    content = get_list_or_404(item)[:20]
-    return render(request, 'basedata/item_list.html', {'content': content})
+    modul_type = ContentType.objects.get(app_label='basedata', model=item_name)
+    modul = modul_type.model_class()
+    table = BaseItemTable(modul.objects.all())
+    RequestConfig(request).configure(table)
+    return render(request, 'basedata/item_list.html', {'table': table})
 
