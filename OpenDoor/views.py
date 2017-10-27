@@ -2,15 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.generic import View
 
 
-@login_required(login_url='/login')
-def index(request):
-    return render(request, 'index.html')
+class UserLoginView(View):
+    def get(self, request):
+        return render(request, 'login.html')
 
-
-def user_login(request):
-    if request.method == "POST":
+    def post(self, request):
         try:
             username = request.POST.get('username', '')
             password = request.POST.get('password', '')
@@ -27,5 +26,3 @@ def user_login(request):
         except Exception as e:
             error_message = str(e)
             return render(request, 'login.html', {'error_message': error_message})
-    else:
-        return render(request, 'login.html')
