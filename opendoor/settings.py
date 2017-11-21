@@ -128,3 +128,14 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'collectstatic')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+document_status = (
+    ('open', '开立'),
+    ('submit', '提交'),
+    ('confirm', '审核'),
+    ('cancel', '作废')
+)
